@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Coach AI - Your Personal Cricket Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Cricket Field Background Pattern -->
+    <div class="cricket-field-bg"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="cricket-ball-icon">
+                    <svg viewBox="0 0 100 100" width="50" height="50">
+                        <circle cx="50" cy="50" r="45" fill="#c41e3a"/>
+                        <path d="M20 50 Q50 20 80 50" stroke="#fff" stroke-width="3" fill="none"/>
+                        <path d="M20 50 Q50 80 80 50" stroke="#fff" stroke-width="3" fill="none"/>
+                        <line x1="25" y1="35" x2="30" y2="40" stroke="#fff" stroke-width="2"/>
+                        <line x1="35" y1="28" x2="40" y2="33" stroke="#fff" stroke-width="2"/>
+                        <line x1="48" y1="23" x2="52" y2="28" stroke="#fff" stroke-width="2"/>
+                        <line x1="60" y1="28" x2="65" y2="33" stroke="#fff" stroke-width="2"/>
+                        <line x1="70" y1="35" x2="75" y2="40" stroke="#fff" stroke-width="2"/>
+                        <line x1="25" y1="65" x2="30" y2="60" stroke="#fff" stroke-width="2"/>
+                        <line x1="35" y1="72" x2="40" y2="67" stroke="#fff" stroke-width="2"/>
+                        <line x1="48" y1="77" x2="52" y2="72" stroke="#fff" stroke-width="2"/>
+                        <line x1="60" y1="72" x2="65" y2="67" stroke="#fff" stroke-width="2"/>
+                        <line x1="70" y1="65" x2="75" y2="60" stroke="#fff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>Cricket Coach</h1>
+                    <span class="tagline">Your AI Cricket Mentor</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-badge">
+                    <span class="stat-icon">🏏</span>
+                    <span>Batting</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-icon">🥎</span>
+                    <span>Bowling</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-icon">🏟️</span>
+                    <span>Fielding</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Chat Container -->
+        <div class="chat-container">
+            <!-- Chat Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="message coach-message">
+                    <div class="message-avatar">
+                        <div class="coach-avatar">🏏</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="sender-name">Coach</span>
+                            <span class="message-time" id="currentTime"></span>
+                        </div>
+                        <div class="message-text">
+                            <p>Welcome to Cricket Coach AI! I'm your personal cricket mentor, here to help you improve your game.</p>
+                            <p><strong>I can help you with:</strong></p>
+                            <ul>
+                                <li>🏏 <strong>Batting techniques</strong> - stance, grip, shots, and strategy</li>
+                                <li>🥎 <strong>Bowling skills</strong> - pace, spin, line & length, variations</li>
+                                <li>🏟️ <strong>Fielding positions</strong> - catching, throwing, positioning</li>
+                                <li>📊 <strong>Match tactics</strong> - game plans and situational awareness</li>
+                                <li>🏃‍♂️ <strong>Fitness & training</strong> - drills and conditioning</li>
+                            </ul>
+                            <p>What would you like to work on today?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="sendQuickMessage('How can I improve my batting technique?')">
+                    🏏 Batting Tips
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('What are some good bowling drills?')">
+                    🥎 Bowling Drills
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('How should I position myself while fielding?')">
+                    🏟️ Fielding Position
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('What fitness exercises are good for cricket?')">
+                    🏃‍♂️ Fitness Tips
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('Explain cricket match strategies')">
+                    📊 Match Strategy
+                </button>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea
+                        id="messageInput"
+                        class="chat-input"
+                        placeholder="Ask me anything about cricket - techniques, drills, strategies..."
+                        rows="1"
+                        maxlength="1000"
+                        onkeydown="handleKeyDown(event)"></textarea>
+                    <button id="sendBtn" class="send-btn" onclick="sendMessage()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span class="powered-by">Powered by Ollama AI</span>
+                    <span id="charCount" class="char-count">0/1000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="stumps-decoration">
+                    <div class="stump"></div>
+                    <div class="stump"></div>
+                    <div class="stump"></div>
+                    <div class="bail"></div>
+                    <div class="bail bail-right"></div>
+                </div>
+                <p>🏏 Master your cricket skills with AI-powered coaching 🏏</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/chat.js}"></script>
+    <script>
+        // Set current time on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            // Focus on input field
+            const messageInput = document.getElementById('messageInput');
+            if (messageInput) {
+                messageInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>
